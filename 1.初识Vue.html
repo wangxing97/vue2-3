@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./libs/vue.js"></script>
+    <title>初识Vue</title>
+</head>
+<body>
+    <div id="root">
+        <h3>你好,{{name}},{{Date.now()}}</h3>
+    </div>
+</body>
+<script>
+    const vm = new Vue({
+        el:"#root",
+        data:{
+            name:"张三"
+        }
+    });
+</script>
+</html>

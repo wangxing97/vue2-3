@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./libs/vue.js"></script>
+    <title>数据绑定</title>
+</head>
+<body>
+    <div id="app">
+        单项绑定：<input type="text" :value="name">
+        <br>
+        双项绑定：<input type="text" v-model="name">
+    </div>
+</body>
+<script>
+    const vm = new Vue({
+        //el:"#app",
+        // data:{
+        //     name:""
+        // }
+        data(){
+            return{
+                name:""
+            }
+        }
+    });
+    vm.$mount("#app")
+</script>
+</html>
