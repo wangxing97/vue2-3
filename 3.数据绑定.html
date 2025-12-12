@@ -11,6 +11,22 @@
         单项绑定：<input type="text" :value="name">
         <br>
         双项绑定：<input type="text" v-model="name">
+        <br>
+        动态绑定：<input type="text" v-model:[attr]="name"></input>
+        <br>
+        <ul>
+            <li v-for="(value,key,index) in object">{{ value }} {{ key }} {{ index }}</li>
+        </ul>
+        <br>
+        <!-- 单选按钮 -->
+        <input type="radio" value="选项1" v-model="selectedOption">
+        <label>选项1</label>
+        <input type="radio" value="选项2" v-model="selectedOption">
+        <label>选项2</label>
+        <p>选中的选项是：{{ selectedOption }}</p>
+        <br>
+        <p>$options:  {{$options}}<br></p>
+        <p>_c:  {{_c}}</p>
     </div>
 </body>
 <script>
@@ -21,7 +37,14 @@
         // }
         data(){
             return{
-                name:""
+                name:"",
+                attr:"value",
+                object: {
+                    name: '张三',
+                    age: 25,
+                    city: '北京'
+                },
+                selectedOption:""
             }
         }
     });

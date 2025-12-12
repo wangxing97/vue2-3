@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./libs/vue.js"></script>
+    <title>数据代理</title>
+</head>
+<body>
+    <div id="app">
+        <p>{{name}}</p>
+        <p>{{address}}</p>
+    </div>
+    <script>
+        const vm = new Vue({
+            el:"#app",
+            data:{
+                name:"张三",
+                address:"北京市西城区"
+            }
+        })
+        let age = 21;
+        let obj = {
+            name : "张三"
+        };
+        Object.defineProperty(obj,"age",{
+            get(){
+                return age;
+            },
+            set(newValue){
+                console.log("age的值被改变：" + newValue);
+                age = newValue;
+            }
+        });
+        obj.age = 38;
+        Object.defineProperty(obj,"address",{
+            value:"北京市西城区",
+            writable:true,
+            enumerable:true,
+            configurable:true
+        });
+        console.log(Object.getOwnPropertyDescriptors(obj))
+    </script>
+</body>
+</html>

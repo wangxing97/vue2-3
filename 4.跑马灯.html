@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./libs/vue.js"></script>
+    <title>跑马灯</title>
+</head>
+<body>
+    <div id="app">
+        <button @click="start">开始</button>
+        <button @click="stop">停止</button>
+        <div style="width: 150px; overflow: hidden;white-space: nowrap;">
+            {{msg}}
+        </div>
+    </div>
+</body>
+<script>
+    const vm = new Vue({
+        data(){
+            return{
+                msg:"萨瓦迪卡，欢迎大家，欢迎大家来到我们美丽的泰国~~",
+                flag:true,
+                internalObj:null
+            }
+        },
+        methods:{
+            start(){
+                if(this.flag){
+                    this.internalObj = setInterval( () => {
+                        let pre = this.msg.substring(0,1);
+                        let end = this.msg.substring(1);
+                        this.msg = end + pre;
+                    },200);
+                    this.flag = false;
+                }
+            },
+            stop(){
+                clearInterval(this.internalObj);
+                this.flag = true;
+            }
+        }
+    });
+    vm.$mount("#app")
+</script>
+</html>

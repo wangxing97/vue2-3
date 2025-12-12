@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+    <title>事件处理</title>
+    <style>
+      * {
+        margin: 20px;
+      }
+
+      .box {
+        width: 800px;
+        height: 80px;
+        background-color: pink;
+      }
+
+      .box1 {
+        width: 800px;
+        height: 180px;
+        background-color: grey;
+      }
+
+      .box2 {
+        width: 80px;
+        height: 60px;
+        background-color: darkolivegreen;
+      }
+
+      .list {
+        width: 200px;
+        height: 200px;
+        background-color: orange;
+        overflow: auto;
+      }
+
+      li {
+        height: 100px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root">
+      <h2>欢迎来到{{name}}学习</h2>
+      <!-- 1. 阻止默认事件跳转 -->
+      <a href="https://baidu.com" @click.prevent="show($event)">点我提示信息</a>
+
+      <!-- 2. 阻止事件冒泡（常用） -->
+      <div class="box" @click="show()">
+        <button @click.stop="show($event)">点我提示信息</button>
+      </div>
+
+      <!-- 3. 事件只触发一次 -->
+      <button @click.once="show()">点我提示信息（只提示一次，多按无效）</button>
+
+      <!-- 4.使用事件的捕获模式  -->
+      <div class="box1" @click.capture="showMsg(1)">
+        div1
+        <div class="box2" @click="showMsg(2)">div2</div>
+      </div>
+
+      <!-- 5.只有event.target是当前操作的元素时才触发事件 -->
+      <div class="box" @click.self="show()">
+        <button @click="show($event)">点我提示信息</button>
+      </div>
+
+      <!-- 6. 事件的默认行为立即执行，无需等待事件回调执行完毕 -->
+      <!-- 没有添加passive之前，先执行回调函数，再执行默认行为，业务多就会造成页面卡顿（滚动条不动） -->
+      <!-- 添加passive之后，先执行默认行为，再执行回调函数 -->
+      <!-- 移动端使用较多，不是所有情况都需要这个修饰符 -->
+      <ul class="list" @wheel.passive="demo">
+        <!-- 滚动事件1：给滚动条添加scroll，滚动条移动就调用 -->
+        <!-- 滚动事件2：给鼠标滚轮添加whell，鼠标滚轮动就调用，哪怕滚动条已经到底 -->
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+      </ul>
+      <!-- Enter：回车键
+            Tab：制表键（特殊，必须配合keydown使用）
+            Esc：ESC 键
+            Space：空格键
+            Up：上方向键
+            Down：下方向键
+            Left：左方向键
+            Right：右方向键 -->
+      <input
+        type="text"
+        placeholder="typing something"
+        @keyup.enter="showMsg($event.target.value)"
+      />
+    </div>
+
+    <script>
+      new Vue({
+        el: "#root",
+        data: {
+          name: "尚硅谷",
+        },
+        methods: {
+          show(e) {
+            // 1. 阻止默认事件跳转
+            // e.preventDefault()
+            alert("你好");
+          },
+          showMsg(msg) {
+            alert(msg);
+          },
+          demo() {
+            console.log("滚动");
+            for (let i = 0; i < 10000; i++) {
+              console.log(1);
+            }
+            console.log("累坏了");
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
