@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./libs/vue.js"></script>
+    <title>计算属性</title>
+  </head>
+  <body>
+    <div id="app">
+      姓：<input type="text" v-model="firstName" /> <br />
+      名：<input type="text" v-model="lastName" /><br />
+      全名(插值)：<span>{{firstName}} - {{lastName}}</span><br />
+      全名(方法)：<span>{{getFullName()}}</span><br />
+      全名(计算属性)：<span>{{FullName}}</span>
+    </div>
+    <script>
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          firstName: "张",
+          lastName: "三",
+        },
+        methods: {
+          getFullName() {
+            return this.firstName + " - " + this.lastName;
+          },
+        },
+        computed: {
+          //   FullName: {
+          //     get() {
+          //       return this.firstName + " - " + this.lastName;
+          //     },
+          //     set(value) {
+          //       const names = value.split(" - ");
+          //       this.firstName = names[0];
+          //       this.lastName = names[1];
+          //     },
+          //   }
+          FullName() {
+            return this.firstName + " - " + this.lastName;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
