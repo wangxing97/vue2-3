@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./libs/vue.js"></script>
+    <title>遍历属性</title>
+  </head>
+  <body>
+    <div id="app">
+      <h2>遍历数组</h2>
+      <ul>
+        <li v-for="(item,index) in lists" :key="item.id">
+          {{item.id}} - {{ item.name }} - {{ item.age }}
+        </li>
+      </ul>
+      <h2>遍历对象</h2>
+      <ul>
+        <li v-for="(value,key) in obj" :key="key">{{ value }} - {{ key }}</li>
+      </ul>
+      <h2>遍历字符串</h2>
+      <ul>
+        <li v-for="(char,index) in 'abcdefg'" :key="index">
+          {{ char }} - {{ index }}
+        </li>
+      </ul>
+      <h2>遍历数字</h2>
+      <ul>
+        <li v-for="(number,index) in 10" :key="index">
+          {{ number }} - {{ index }}
+        </li>
+      </ul>
+      <h2>错误演示</h2>
+      <button @click="addPerson">add person</button>
+      <ul>
+        <li v-for="(item,index) in lists" :key="item.id">
+          {{item.id}} - {{ item.name }} - {{ item.age }}
+          <input type="text" />
+        </li>
+      </ul>
+    </div>
+  </body>
+  <script>
+    const vm = new Vue({
+      el: "#app",
+      data: {
+        lists: [
+          {
+            id: "001",
+            name: "张三",
+            age: 18,
+          },
+          {
+            id: "002",
+            name: "李四",
+            age: 28,
+          },
+          {
+            id: "003",
+            name: "王五",
+            age: 38,
+          },
+        ],
+        obj: {
+          name: "Jona than",
+          gender: "Male",
+          age: 30,
+        },
+      },
+      methods: {
+        addPerson() {
+          let index = this.lists.length + 1;
+          this.lists.unshift({
+            id: "00" + index,
+            name: "新成员" + index,
+            age: Math.floor(Math.random() * 100),
+          });
+        },
+      },
+    });
+  </script>
+</html>
