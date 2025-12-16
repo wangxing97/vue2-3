@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./libs/vue.js"></script>
+    <title>Vue.set属性</title>
+  </head>
+  <body>
+    <div id="app">
+      <h2>姓名：{{people.name}}</h2>
+      <h2>年龄：{{people.age}}</h2>
+      <h2>性别：{{people.gender}}</h2>
+      <button @click.once="addGender">添加性别</button>
+    </div>
+  </body>
+  <script>
+    const vm = new Vue({
+      data: {
+        people: {
+          name: "张三",
+          age: 18,
+        },
+      },
+      methods: {
+        addGender() {
+          Vue.set(this.people, "gender", "Male");
+        },
+      },
+    });
+    vm.$mount("#app");
+  </script>
+</html>

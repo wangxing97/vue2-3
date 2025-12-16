@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./libs/vue.js"></script>
+    <title>遍历过滤</title>
+  </head>
+  <body>
+    <div id="app">
+      <input type="text" v-model="uname" />
+      <button @click="sortType=1">年龄降序</button>
+      <button @click="sortType=2">年龄升序</button>
+      <ul>
+        <li v-for="(item,index) in computedFilterData" :key="item.id">
+          {{item.id}} - {{ item.name }} - {{ item.age }}
+        </li>
+      </ul>
+    </div>
+  </body>
+  <script>
+    const vm = new Vue({
+      el: "#app",
+      data: {
+        lists: [
+          {
+            id: "001",
+            name: "张三",
+            age: 18,
+          },
+          {
+            id: "002",
+            name: "李四",
+            age: 28,
+          },
+          {
+            id: "003",
+            name: "王五",
+            age: 38,
+          },
+          {
+            id: "004",
+            name: "李三",
+            age: 48,
+          },
+        ],
+        filterData: [],
+        uname: "",
+        sortType: 0,
+      },
+      methods: {},
+      watch: {
+        uname: {
+          immediate: true,
+          handler(val) {
+            this.filterData = this.lists.filter((item) =>
+              item.name.includes(val)
+            );
+          },
+        },
+      },
+      computed: {
+        computedFilterData() {
+          return this.lists
+            .filter((item) => item.name.includes(this.uname))
+            .sort((a, b) => {
+              return this.sortType === 1 ? b.age - a.age : a.age - b.age;
+            });
+        },
+      },
+    });
+  </script>
+</html>
