@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>SAPUI5 OData Model Demo</title>
+    <script
+      id="sap-ui-bootstrap"
+      src="https://sdk.openui5.org/resources/sap-ui-core.js"
+      data-sap-ui-theme="sap_belize"
+      data-sap-ui-libs="sap.m"
+      data-sap-ui-async="true"
+    ></script>
+
+    <script>
+      sap.ui.getCore().attachInit(function () {
+        // 创建模型
+        var sUrl = "https://services.odata.org/V2/Northwind/Northwind.svc/";
+        var oModel = new sap.ui.model.odata.v2.ODataModel(sUrl);
+        sap.ui.getCore().setModel(oModel);
+
+        // 创建 UI
+        new sap.m.Shell({
+          app: new sap.m.App({
+            pages: [
+              new sap.m.Page({
+                title: "Northwind Products",
+                content: [
+                  new sap.m.List({
+                    items: {
+                      path: "/Products",
+                      template: new sap.m.StandardListItem({
+                        title: "{ProductName}",
+                      }),
+                    },
+                  }),
+                ],
+              }),
+            ],
+          }),
+        }).placeAt("content");
+      });
+    </script>
+  </head>
+  <body class="sapUiBody" id="content"></body>
+</html>
