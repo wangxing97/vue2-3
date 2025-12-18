@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./libs/vue.js"></script>
+    <title>自定义指令</title>
+  </head>
+  <body>
+    <div id="app">
+      <h2>v-text <span v-text="n"></span></h2>
+      <h2>v-big <span v-big="n"></span></h2>
+      <button @click="++n">n++</button>
+      <hr />
+      <input type="text" v-fbind="n" />
+    </div>
+  </body>
+  <script>
+    const vm = new Vue({
+      data: {
+        n: 1,
+      },
+      methods: {},
+      directives: {
+        big(element, o) {
+          console.log(element, o);
+          element.innerText = o.value * 10;
+        },
+        fbind: {
+          bind(element, o) {
+            element.value = o.value;
+            console.log("bind");
+          },
+          inserted(element, o) {
+            element.focus();
+            console.log("inserted");
+          },
+          update(element, o) {
+            element.value = o.value;
+            console.log("update");
+          },
+        },
+      },
+    });
+    vm.$mount("#app");
+  </script>
+</html>
