@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>创建组件的方式</title>
+    <script src="./libs/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <my-extend-comp></my-extend-comp>
+      <my-comp1></my-comp1>
+      <my-comp2></my-comp2>
+      <my-comp3></my-comp3>
+    </div>
+
+    <template id="temp1">
+      <h2>这是直接使用template创建出模板，通过id引用</h2>
+    </template>
+    <script>
+      //1.1使用Vue.extend来创建全局的Vue组件
+      const myComp = Vue.extend({
+        template: "<h2>这是使用Vue.extend创建的组件</h2>",
+      });
+      Vue.component("myExtendComp", myComp);
+
+      //1.2直接使用Vue.component来创建全局的Vue组件
+      Vue.component("myComp1", {
+        template: "<h2>这是使用Vue.component创建的组件</h2>",
+      });
+
+      //1.3使用template来创建全局的Vue组件
+      Vue.component("myComp2", {
+        template: "#temp1",
+      });
+
+      //1.4创建局部Vue组件
+      const vm = new Vue({
+        el: "#app",
+        data: {},
+        methods: {},
+        components: {
+          myComp3: {
+            template: "<h2>这是在局部Vue创建的组件</h2>",
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

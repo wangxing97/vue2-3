@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>组件嵌套</title>
+    <script src="./libs/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <family></family>
+    </div>
+
+    <script>
+      // 定义孩子组件
+      const child = Vue.extend({
+        template: `
+          <ul>
+            <li v-for="(item,index) in childrens" :key="index">{{ index }} - {{ item.name }}</li>
+          </ul>
+        `,
+        data() {
+          return {
+            childrens: [
+              { name: "child 1" },
+              { name: "child 2" },
+              { name: "child 3" },
+              { name: "child 4" },
+            ],
+          };
+        },
+      });
+      // 定义父母组件
+      const parent = Vue.extend({
+        template: `
+          <div>
+            <h2>父亲:{{ fname }}</h2>
+            <h2>母亲:{{ mname }}</h2>
+            <child />
+          </div>
+        `,
+        data() {
+          return {
+            fname: "张三",
+            mname: "李四",
+          };
+        },
+        components: {
+          child,
+        },
+      });
+      // 定义家庭组件
+      const family = Vue.extend({
+        template: `
+          <div>
+            <h1>家庭成员</h1>
+            <parent></parent>
+          </div>
+        `,
+        components: {
+          parent,
+        },
+      });
+      const vm = new Vue({
+        el: "#app",
+        components: {
+          family,
+        },
+      });
+    </script>
+  </body>
+</html>
