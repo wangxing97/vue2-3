@@ -5,4 +5,9 @@ Vue.config.productionTip = false
 
 window.vm =  new Vue({
   render: h => h(App),
+  beforeCreate(){
+    Vue.prototype.$bus = this;
+  },
 }).$mount('#app')
+
+Vue.prototype.$bus = window.vm

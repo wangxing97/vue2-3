@@ -13,6 +13,17 @@
           title:""
         }
       },
+      mounted() {
+        this.$bus.$on("addRandomTodo",(...param) => {
+          const d = new Date();
+          const pad = (num) => String(num).padStart(2, '0');
+          const dateStr = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+          const arr = Array.from({length:param[0].random},(_,index)=>({
+            id:nanoid(),info:`随机任务：${index+1}，时间：${dateStr}`,done:false
+          }))
+          this.$emit('addTodo',arr);
+        })
+      },
       methods:{
         add(e){
           if(e.target.value === ''){
@@ -22,6 +33,8 @@
           this.$emit('addTodo',obj);
           e.target.value = '';
         }
+      },
+      watch:{
       }
   }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="todo-container">
-      <div class="todo-wrap">
+      <div class="todo-wrap" v-if="dataLoaded">
         <MyHeader @addTodo="addTodo($event)"/>
         <MyList :todo-list="todoList" 
                 :changeTodo="changeTodo"
@@ -20,6 +20,7 @@
 import MyHeader from './components/MyHeader.vue'
 import MyList from './components/MyList.vue'
 import MyFooter from './components/MyFooter.vue'
+import sap from './sap.js'
 export default {
   name: 'App',
   components: {
@@ -30,12 +31,17 @@ export default {
   data(){
     return {
         todoList:[],
-        selectedAllFlag:false
+        selectedAllFlag:false,
+        dataLoaded:false
     }
   },
   methods:{
     addTodo(e){
-      this.todoList.unshift(e);
+      if(Array.isArray(e)){
+        this.todoList.unshift(...e);
+      }else{
+        this.todoList.unshift(e);
+      }
       this.changeAllFlag();
     },
     changeTodo(id){
@@ -70,6 +76,18 @@ export default {
       this.changeAllFlag();
     }
   },
+  mounted(){
+    // 必须在 async 函数内部
+    // const init = async () => {
+    //   // 看起来是直接赋值，实际上代码会在这里“等”结果返回
+    //   window.oDataModel = await sap.getService('sap/opu/odata/sap/YWXOD001_SRV');
+    //   // 这一行会在拿到对象后才执行
+    //   console.log('现在可以直接用了:', window.oDataModel);
+    // };
+
+    // init();
+    //Array.from({ length: 10000 }, (_, i) => console.log(`第 ${i + 1} 次打印`));
+  },
   created() {
     document.title = 'Vue抬头';
     let oData = JSON.parse(localStorage.getItem("todoData"));
@@ -83,6 +101,25 @@ export default {
     }
     this.todoList = oData.todoList;
     this.selectedAllFlag = oData.selectedAllFlag;
+    // (async () => {
+    //   const jsonData = await sap.readData(sap.getService('sap/opu/odata/sap/YWXOD001_SRV'),`/UserSet('SN_DEV015')`);
+    //   console.log(jsonData);
+    // })();
+    const url = '/sap/opu/odata/sap/YWXOD001_SRV';
+    
+    // 即使 getService 很慢，readData 也会自动等它
+    (async()=>{
+      try {
+        const data = await sap.readData(
+          sap.getService(url, { json: true, useBatch: true }), 
+          "/UserSet('SN_DEV015')"
+        );
+        this.dataLoaded = true;
+        console.log("数据就绪:", data);
+      } catch (err) {
+        console.error("加载失败", err);
+      }
+    })();
   },
   watch:{
     todoList:{

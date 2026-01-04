@@ -6,7 +6,10 @@
     <span>
       <span>已完成{{doneNum}}</span> / 全部{{allNum}}
     </span>
-    <button class="btn btn-danger" @click="clearTodoed()">清除已完成任务</button>
+    <div>
+      <button class="btn btn-danger" @click="clearTodoed()">清除已完成任务</button>
+      <button class="btn btn-random" @click="addRandomTodo()">随机添加1-10条任务</button>
+    </div>
   </div>
 </template>
 
@@ -14,6 +17,11 @@
 export default {
     name:"MyFooter",
     props:['todoList','selectedAllFlag','selectedAll','clearTodoed'],
+    methods:{
+      addRandomTodo(){
+        this.$bus.$emit("addRandomTodo",{random:Math.floor(Math.random()*10 + 1)});
+      }
+    },
     computed:{
       doneNum(){
         return this.todoList.reduce((pre,cur)=>{
@@ -28,6 +36,11 @@ export default {
 </script>
 
 <style scoped>
+.btn-random {
+  color: #fff;
+  background-color: darkviolet;
+  border: 1px solid darkviolet;
+}
 .todo-footer {
   height: 40px;
   line-height: 40px;
@@ -48,8 +61,11 @@ export default {
   margin-right: 5px;
 }
 
-.todo-footer button {
+.todo-footer div {
   float: right;
+}
+.todo-footer div button{
+  margin-left: 3px;
   margin-top: 5px;
 }
 </style>
