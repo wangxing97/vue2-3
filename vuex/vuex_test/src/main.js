@@ -3,6 +3,7 @@ import App from './App.vue'
 
 Vue.config.productionTip = false
 
+console.log("冲突");
 window.vm =  new Vue({
   render: h => h(App),
   beforeCreate(){
