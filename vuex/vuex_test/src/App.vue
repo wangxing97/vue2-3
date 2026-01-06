@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <Count></Count>
+    <router-link active-class="activeClass" to="/Home" >Home</router-link>
+    <router-link active-class="activeClass" to="/User" >User</router-link>
+    <router-view style="margin-left: 50px;"></router-view>
   </div>
 </template>
 
 <script>
-import Count from './components/Count.vue'
 export default {
   name: 'App',
   components: {
-    Count
   },
   data(){
     return {
@@ -18,5 +18,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.activeClass{
+  color: red;
+}
 </style>
