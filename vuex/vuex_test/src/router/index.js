@@ -8,7 +8,7 @@ import User from '../pages/User.vue'
 import Male from '../pages/Male.vue'
 import Female from '../pages/Female.vue'
 
-export default new VueRouter({
+const router = new VueRouter({
     routes:[
         {
             path:"/",
@@ -25,7 +25,12 @@ export default new VueRouter({
                 {
                     name:"nande",
                     path:"Male/:number",
-                    component:Male
+                    props:true,
+                    component:Male,
+                    beforeEnter:(to,from,next)=>{
+                        console.log('private before',to,from);
+                        next();
+                    }
                 },
                 {
                     name:"nvde",
@@ -36,3 +41,12 @@ export default new VueRouter({
         }
     ]
 });
+
+router.beforeEach((to,from,next)=>{
+    console.log("global before",to,from);
+    next();
+})
+router.afterEach((from,to)=>{
+    console.log("global after",from,to);
+})
+export default router;
