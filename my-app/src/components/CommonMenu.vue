@@ -9,7 +9,6 @@
     :collapse="isCollapse"
   >
     <h3>{{ isCollapse ? "Vue" : "Vue管理系统" }}</h3>
-    <hr />
     <el-menu-item v-for="item in noChild" :index="item.name" :key="item.name">
       <i :class="`el-icon-${item.icon}`"></i>
       <span slot="title">{{ item.label }}</span>
@@ -33,59 +32,23 @@
 
 <script>
 export default {
-  name: "Menu",
+  name: "CommonMenu",
   mounted() {
     this.$bus.$on("changeCollapse", () => {
       this.isCollapse = !this.isCollapse;
     });
   },
   data() {
-    return {
-      menuData: [
-        {
-          path: "/",
-          name: "home",
-          label: "首页",
-          icon: "s-home",
-          url: "Home/Home",
-        },
-        {
-          path: "/mall",
-          name: "mall",
-          label: "商品管理",
-          icon: "video-play",
-          url: "MallManage/MallManage",
-        },
-        {
-          path: "/user",
-          name: "user",
-          label: "用户管理",
-          icon: "user",
-          url: "UserManage/UserManage",
-        },
-        {
-          label: "其他",
-          name: "other",
-          icon: "location",
-          children: [
-            {
-              path: "/page1",
-              name: "page1",
-              label: "首页1",
-              icon: "setting",
-              url: "Other/PageOne",
-            },
-            {
-              path: "/page2",
-              name: "page2",
-              label: "首页2",
-              icon: "setting",
-              url: "Other/PageTwo",
-            },
-          ],
-        },
-      ],
-    };
+    return {};
+  },
+  watch: {
+    $route: {
+      handler(to, from) {
+        this.$store.commit("tab/setTabData", to.path.split("/")[1]);
+      },
+      immediate: true,
+      deep: true,
+    },
   },
   methods: {
     onSelect(...params) {
@@ -94,6 +57,7 @@ export default {
         this.$route.path !== path &&
         !(this.$route.path == "/home" && path == "/")
       ) {
+        //this.$store.commit("tab/setTabData", params[0]);
         this.$router.push(path);
       }
     },
@@ -122,6 +86,9 @@ export default {
     },
   },
   computed: {
+    menuData() {
+      return this.$store.state.tab.menuData;
+    },
     noChild() {
       return this.menuData.filter((item) => !item.children);
     },
@@ -137,18 +104,19 @@ export default {
 
 <style lang="less" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
+  width: 150px;
   min-height: 400px;
 }
 .el-menu {
-  // height: 100vh;
-  height: 100%;
+  height: 1000px;
+  // height: 100%;
   h3 {
     color: #fff;
     text-align: center;
-    line-height: 48px;
+    line-height: 60px;
     font-size: 16px;
     font-weight: 400;
+    border-bottom: 1px solid #ccc;
   }
   border-right: none;
 }

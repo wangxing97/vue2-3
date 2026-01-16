@@ -1,49 +1,27 @@
-<template>
-  <button @click="unmountDemo">切换Demo</button>
-  <br>
-  <Suspense>
-    <template v-slot:default>
-      <User/>
-    </template>
-    <template v-slot:fallback>
-      <h3>加载中。。。</h3>
-    </template>
-  </Suspense>
-  <Demo v-if="isShow"></Demo>
-  <Demo2/>
-  <Demo3/>
-  <Dialog/>
-</template>
+<!--
+该示例创建了一个可复用网格组件，并结合外部数据使用它。
+-->
+<script setup>
+import DemoGrid from './components/Grid.vue'
+import { ref } from 'vue'
 
-<script>
-// import User from './components/User.vue'
-import { defineAsyncComponent } from 'vue'
-const User = defineAsyncComponent(()=>import('./components/User'))
-import Demo from './components/Demo.vue'
-import Demo2 from './components/Demo2.vue'
-import Demo3 from './components/Demo3.vue'
-import Dialog from './components/Dialog.vue'
-import { provide, reactive, ref } from 'vue';
-export default {
-  name: 'App',
-  components:{User,Demo,Demo2,Demo3,Dialog},
-  setup(){
-    let isShow = ref(true)
-    function unmountDemo(){
-      isShow.value = !isShow.value
-    }
-    let car = reactive({
-      name:'Audi',
-      price:'35w'
-    })
-    provide('car',car)
-    return {
-      isShow,
-      unmountDemo
-    }
-  }
-}
+const searchQuery = ref('')
+const gridColumns = ['name', 'power']
+const gridData = [
+  { name: 'Chuck Norris', power: Infinity },
+  { name: 'Bruce Lee', power: 9000 },
+  { name: 'Jackie Chan', power: 7000 },
+  { name: 'Jet Li', power: 8000 }
+]
 </script>
 
-<style>
-</style>
+<template>
+  <form id="search">
+    Search <input name="query" v-model="searchQuery">
+  </form>
+  <DemoGrid
+    :data="gridData"
+    :columns="gridColumns"
+    :filter-key="searchQuery">
+  </DemoGrid>
+</template>

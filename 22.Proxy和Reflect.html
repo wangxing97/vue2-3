@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>22.Proxy和Reflect</title>
+  </head>
+  <body>
+    <script>
+      let user = {
+        name: "Tom",
+        age: 18,
+      };
+      // Proxy
+      let userProxy = new Proxy(user, {});
+
+      user.gender = "Male";
+      userProxy.name = "Jerry";
+      userProxy.weather = "Cloud";
+
+      // Reflect
+      console.log(Reflect.get(userProxy, "name"));
+      console.log(Reflect.deleteProperty(userProxy, "name"));
+      console.log(user);
+      // 定义一个内部变量存储 name 的实际值（闭包形式，避免外部篡改）
+      let _name = "Jonathan";
+      // 用 Reflect.defineProperty 定义 name 属性的 get/set
+      Reflect.defineProperty(user, "name", {
+        // 可枚举（可选，根据需要设置）
+        enumerable: true,
+        // 可配置（可选）
+        configurable: true,
+        // 读取 name 时触发
+        get() {
+          return _name;
+        },
+        // 修改 name 时触发，val 是新值
+        set(val) {
+          // 可以在这里做值的校验、处理
+          if (typeof val !== "string") {
+            throw new Error("name 必须是字符串");
+          }
+          // 更新内部存储的变量
+          _name = val;
+        },
+      });
+      console.log(user);
+    </script>
+  </body>
+</html>

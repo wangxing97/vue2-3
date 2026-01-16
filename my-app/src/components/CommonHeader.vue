@@ -6,7 +6,8 @@
         size="small"
         @click="changeMenu"
       ></el-button>
-      <span>首页</span>
+      <span>13</span>
+      <common-bread></common-bread>
     </div>
     <div class="r-content">
       <el-dropdown>
@@ -24,8 +25,10 @@
 
 <script>
 import userImg from "../images/user.jpg";
+import CommonBread from "./CommonBread.vue";
 export default {
   name: "CommonHeader",
+  components: { CommonBread },
   data() {
     return {
       userImg,
@@ -34,7 +37,6 @@ export default {
   methods: {
     changeMenu() {
       //this.$bus.$emit("changeCollapse");
-      console.log(this.$store);
       this.$store.commit("tab/updateCollapse");
     },
   },
@@ -50,6 +52,36 @@ export default {
   align-items: center;
   .l-content {
     padding: 0 20px;
+    display: flex;
+    align-items: center;
+    span {
+      width: 20px;
+      height: 20px;
+      position: relative;
+      color: #fff;
+      background-color: red;
+      border-radius: 50%;
+      left: -20px;
+      top: -10px;
+      line-height: 18px;
+    }
+    .el-breadcrumb {
+      margin-left: 10px;
+      /deep/.el-breadcrumb__item {
+        .el-breadcrumb__inner {
+          color: gray;
+        }
+        &:last-child {
+          .el-breadcrumb__inner {
+            color: #fff;
+          }
+        }
+        .el-breadcrumb__inner:hover {
+          color: rgb(64, 158, 255);
+          cursor: pointer;
+        }
+      }
+    }
   }
   span {
     color: aliceblue;
