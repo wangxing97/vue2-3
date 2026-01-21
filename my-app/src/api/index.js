@@ -23,3 +23,11 @@ export const deleteUser = (data) => {
 export const batchDeleteUser = (data) => {
     return http.post('/user/batchDelete', data);
 }
+
+export const login = (data) => {
+    return http.post('/permission/login', data)
+}
+
+export const checkAuth = (data) => {
+    return http.post('/permission/auth', data)
+}

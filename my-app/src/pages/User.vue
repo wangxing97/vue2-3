@@ -133,6 +133,7 @@ export default {
       dialogFormVisible: false,
       tableData: [],
       userForm: {
+        id: "",
         name: "",
         age: "",
         sex: "",
@@ -278,29 +279,41 @@ export default {
           });
           return;
         }
-        if (!this.userForm.id) {
-          addUser(this.userForm).then((data) => {
-            this.$message({
-              showClose: true,
-              message: data.data.msg,
-              type: "success",
-            });
-            this.dialogClose();
-            this.dialogFormVisible = false;
-            this.getUserData();
+        const requestFn = this.userForm.id ? updateUser : addUser;
+        console.log(requestFn);
+        requestFn(this.userForm).then((data) => {
+          this.$message({
+            showClose: true,
+            message: data.data.msg,
+            type: "success",
           });
-        } else {
-          updateUser(this.userForm).then((data) => {
-            this.$message({
-              showClose: true,
-              message: data.data.msg,
-              type: "success",
-            });
-            this.dialogClose();
-            this.dialogFormVisible = false;
-            this.getUserData();
-          });
-        }
+          this.dialogClose();
+          this.dialogFormVisible = false;
+          this.getUserData();
+        });
+        // if (!this.userForm.id) {
+        //   addUser(this.userForm).then((data) => {
+        //     this.$message({
+        //       showClose: true,
+        //       message: data.data.msg,
+        //       type: "success",
+        //     });
+        //     this.dialogClose();
+        //     this.dialogFormVisible = false;
+        //     this.getUserData();
+        //   });
+        // } else {
+        //   updateUser(this.userForm).then((data) => {
+        //     this.$message({
+        //       showClose: true,
+        //       message: data.data.msg,
+        //       type: "success",
+        //     });
+        //     this.dialogClose();
+        //     this.dialogFormVisible = false;
+        //     this.getUserData();
+        //   });
+        // }
       });
     },
     dialogClose() {

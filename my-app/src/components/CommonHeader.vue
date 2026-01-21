@@ -10,13 +10,13 @@
       <common-bread></common-bread>
     </div>
     <div class="r-content">
-      <el-dropdown>
+      <el-dropdown @command="handleCommand">
         <span class="el-dropdown-link">
           <el-avatar size="small" :src="userImg"></el-avatar>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人中心</el-dropdown-item>
-          <el-dropdown-item>退出</el-dropdown-item>
+          <el-dropdown-item command="logout">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -38,6 +38,12 @@ export default {
     changeMenu() {
       //this.$bus.$emit("changeCollapse");
       this.$store.commit("tab/updateCollapse");
+    },
+    handleCommand(command) {
+      if (command === "logout") {
+        this.$cookie.remove("JSESSIONID");
+        this.$router.push("/login");
+      }
     },
   },
 };

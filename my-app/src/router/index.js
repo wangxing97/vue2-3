@@ -3,6 +3,9 @@ import VueRouter from 'vue-router';
 import Home from '../pages/Home'
 import User from '../pages/User'
 import Main from '../pages/Main'
+import Cookie from 'js-cookie'
+import { checkAuth } from '../api';
+import { Message } from 'element-ui'
 Vue.use(VueRouter);
 const VueRouterPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(to) {
@@ -31,12 +34,44 @@ const router = new VueRouter({
                     path: 'Page2', component: () => import('../pages/Page2.vue')
                 }
             ]
+        },
+        {
+            path: '/login',
+            component: () => import('../pages/Login.vue')
         }
     ]
 })
-router.beforeEach((to, from, next) => {
-    // console.log("global before", to, from);
-    next();
+router.beforeEach(async (to, from, next) => {
+    const jsessionId = Cookie.get('JSESSIONID');
+    let data;
+    if (to.path === '/login') {
+        if (!jsessionId) {
+            next();
+        } else {
+            data = await checkAuth({ 'JSESSIONID': jsessionId });
+            if (data.code === 200) {
+                next('/');
+            } else {
+                Cookie.remove('JSESSIONID');
+                next('/login');
+            }
+            next('/');
+        }
+        return;
+    } else {
+        data = await checkAuth({ 'JSESSIONID': jsessionId });
+        if (data.data.code === 200) {
+            next();
+        } else {
+            Message({
+                showClose: true,
+                message: data.data.message,
+                type: "error",
+            });
+            Cookie.remove('JSESSIONID');
+            next('/login');
+        }
+    }
 })
 router.afterEach((from, to) => {
     // console.log("global after", from, to, store);

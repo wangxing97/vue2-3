@@ -184,7 +184,6 @@ export default {
       this.showGraph("columnGraph", options);
     },
     initPieGraph() {
-      window.videoData = this.videoData;
       const options = {
         title: {
           text: "销售占比",
